@@ -9,10 +9,10 @@ function App() {
 
   const getPostCodeData = (searchQuery: string) => {
     searchQuery.split(",").forEach((postcode, index) => {
-      if (postcodeValidatorExistsForCountry(locale) && postcodeValidator(postcode, locale)) {
-        setTimeout(() => {
-          const trimPostcode = postcode.trim();
+      const trimPostcode = postcode.trim();
 
+      if (postcodeValidatorExistsForCountry(locale) && postcodeValidator(trimPostcode, locale)) {
+        setTimeout(() => {
           axios.get(`http://api.getthedata.com/postcode/${trimPostcode}`)
             .then(function (response) {
               if (response.data.status === "match" && response.data.data.latitude && response.data.data.longitude) {
