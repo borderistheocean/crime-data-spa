@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import axios from "axios";
-import { postcodeValidator, postcodeValidatorExistsForCountry } from 'postcode-validator';
+import { postcodeValidator, postcodeValidatorExistsForCountry } from "postcode-validator";
 
 function App() {
+  const locale = "GB";
   const [postcodeInputValue, setpostcodeInputValue] = useState("");
 
   const getPostCodeData = (searchQuery: string) => {
     searchQuery.split(",").forEach((postcode, index) => {
-      if (postcodeValidatorExistsForCountry('GB') && postcodeValidator(postcode, 'GB')) {
+      if (postcodeValidatorExistsForCountry(locale) && postcodeValidator(postcode, locale)) {
         setTimeout(() => {
           const trimPostcode = postcode.trim();
 
@@ -17,9 +18,9 @@ function App() {
               if (response.data.status === "match" && response.data.data.latitude && response.data.data.longitude) {
                 axios.post(`https://data.police.uk/api/crimes-street/all-crime?lat=${response.data.data.latitude}&lng=${response.data.data.longitude}`)
                   .then(function (response) {
-                    // Reponse for street crime
+                    // Reponse for street crime query
                     console.log(response);
-                    
+
                     if (response.data) {
                       response.data.forEach((crimeData: any, index: number) => {
                         console.log(`<<< result ${index}`)
@@ -38,21 +39,13 @@ function App() {
                     }
                   })
                   .catch(function (error) {
-                    // handle error
                     console.log(error);
                   })
-                  .finally(function () {
-                    // always executed
-                  });
               }
             })
             .catch(function (error) {
-              // handle error
               console.log(error);
             })
-            .finally(function () {
-              // always executed
-            });
         }, index * 1000);
       }
     });
