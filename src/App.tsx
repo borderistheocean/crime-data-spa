@@ -13,20 +13,20 @@ function App() {
     return postcode.replace(/ /g, '');
   };
 
-  const arePostcodesValid = (searchQuery: string) => {
-    let resultValid = true;
-    searchQuery && searchQuery.split(",").forEach((postcode) => {
-      if (!postcodeValidator(stripWhitespace(postcode), locale)) {
-        resultValid = false;
-      }
-    });
-    return resultValid;
-  }
+  useEffect(() => {
+    const searchQuery = searchParams.get('postcode') as string;
 
-  const getPostCodeData = (searchQuery: string) => {
+    const arePostcodesValid = (searchQuery: string) => {
+      let resultValid = true;
+      searchQuery && searchQuery.split(",").forEach((postcode) => {
+        if (!postcodeValidator(stripWhitespace(postcode), locale)) {
+          resultValid = false;
+        }
+      });
+      return resultValid;
+    }
+
     if (arePostcodesValid(searchQuery)) {
-      setSearchParams({ "postcode": searchQuery });
-
       searchQuery.split(",").forEach((postcode, index) => {
         const trimmedPostcode = stripWhitespace(postcode);
 
@@ -69,21 +69,14 @@ function App() {
         }
       });
     }
-  }
 
-  useEffect(() => {
-    const postcodeParameter = searchParams.get('postcode') as string;
-    if (postcodeParameter && arePostcodesValid(postcodeParameter)) {
-      setpostcodeInputValue(postcodeParameter);
-      getPostCodeData(postcodeParameter);
-    }
-  }, []);
+  }, [searchParams]);
 
   return (
     <div>
       <label htmlFor="postcodeInput">Postcode/s: </label>
       <input id="postcodeInput" placeholder="" value={postcodeInputValue} onChange={e => setpostcodeInputValue(e.target.value)} />
-      <button onClick={() => getPostCodeData(postcodeInputValue)}>Search</button>
+      <button onClick={() => setSearchParams({ "postcode": postcodeInputValue })}>Search</button>
     </div>
   );
 }
