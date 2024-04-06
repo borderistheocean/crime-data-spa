@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import axios from "axios";
 import { postcodeValidator } from "postcode-validator";
@@ -8,10 +8,15 @@ function App() {
   const locale = "GB";
   const [postcodeInputValue, setpostcodeInputValue] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
+  const previousInputValue = useRef("");
 
   const stripWhitespace = (postcode: string) => {
     return postcode.replace(/ /g, '');
   };
+
+  useEffect(() => {
+    previousInputValue.current = postcodeInputValue;
+  }, [postcodeInputValue]);
 
   useEffect(() => {
     const searchQuery = searchParams.get('postcode') as string;
@@ -27,9 +32,8 @@ function App() {
     }
 
     if (arePostcodesValid(searchQuery)) {
-      searchQuery.split(",").forEach((postcode, index) => {
+      searchQuery && searchQuery.split(",").forEach((postcode, index) => {
         const trimmedPostcode = stripWhitespace(postcode);
-
         if (postcodeValidator(trimmedPostcode, locale)) {
           setTimeout(() => {
             axios.get(`http://api.getthedata.com/postcode/${trimmedPostcode}`)
@@ -68,8 +72,12 @@ function App() {
           }, index * 1000);
         }
       });
-    }
 
+      // Set postcode input value in input field on initial page load if parameter is present
+      if (previousInputValue.current === "" && searchQuery) {
+        setpostcodeInputValue(searchQuery)
+      }
+    }
   }, [searchParams]);
 
   return (
