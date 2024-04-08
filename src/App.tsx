@@ -43,7 +43,6 @@ function App() {
                     .then(function (response) {
                       // Reponse for street crime query
                       console.log(response);
-
                       if (response.data) {
                         response.data.forEach((crimeData: any, index: number) => {
                           console.log(`<<< result ${index}`)
@@ -56,7 +55,11 @@ function App() {
                           // Approximate street name
                           console.log(crimeData.location.street.name)
                           // Outcome status
-                          console.log(crimeData.outcome_status.category)
+                          if (crimeData.outcome_status) {
+                            console.log(crimeData.outcome_status.category)
+                          } else {
+                            console.log("On going");
+                          }
                           console.log(">>>")
                         });
                       }
