@@ -3,16 +3,24 @@ import "./App.css";
 import { postcodeValidator } from "postcode-validator";
 import { useSearchParams } from "react-router-dom";
 import _ from "lodash";
+import History from "./History";
 
 function App() {
   const locale = "GB";
   const [postcodeInputValue, setpostcodeInputValue] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const [crimesList, setCrimesList] = useState([] as any);
+  const storedhistory = JSON.parse(localStorage.getItem("history") || "[]");
+  const [history, setHistory] = useState(storedhistory)
+
   const previousInputValue = useRef("");
   const stripWhitespace = (postcode: string) => {
     return postcode.replace(/ /g, '');
   };
+
+  useEffect(() => {
+    localStorage.setItem('history', JSON.stringify(history))
+  }, [history])
 
   useEffect(() => {
     previousInputValue.current = postcodeInputValue;
@@ -28,7 +36,6 @@ function App() {
         const filterValidPostcodes = searchQuery.split(",").filter((postcode) => postcodeValidator(stripWhitespace(postcode), locale))
 
         if (filterValidPostcodes.length > 0) {
-
           const postCodeSearchRequests = filterValidPostcodes.map((x) => `http://api.getthedata.com/postcode/${stripWhitespace(x)}`)
           const fetchPostcodesLatLong = postCodeSearchRequests.map(endpoint => fetch(endpoint).then(response => response.json()));
 
@@ -88,7 +95,7 @@ function App() {
     </ul>
   );
 
-  const crimeTables = crimesList.map((crimeData: any, index: number) =>
+  const crimeTables = crimesList.map((crimeData: any) =>
     <>
       {crimeData.map((crime: any) => (
         <>
@@ -103,8 +110,8 @@ function App() {
               </tr>
             </thead>
             <tbody>
-              {crime.entries.map((details: any, i: any) => (
-                <tr key={i}>
+              {crime.entries.map((details: any, index: any) => (
+                <tr key={index}>
                   <td>{details.location.postcode}</td>
                   <td>{details.month}</td>
                   <td>{details.location.street.name}</td>
@@ -118,13 +125,48 @@ function App() {
     </>
   );
 
+  const handleSubmit = (postCodeValue: any) => {
+    setSearchParams({ "postcode": postCodeValue });
+
+    if (history) if (history.indexOf(postCodeValue) === -1)
+      setHistory([...history, postCodeValue]);
+  }
+
+  const removeEntry = (entryToRemove: any) => {
+    const newHistory = history.filter((entry: any) => entry !== entryToRemove);
+    setHistory(newHistory);
+
+    if (entryToRemove === searchParams.get('postcode') as string) {
+      setSearchParams({ "postcode": "" });
+      setCrimesList([]);
+      setpostcodeInputValue("");
+    }
+  }
+
   return (
     <div>
-      <label htmlFor="postcodeInput">Postcode/s: </label>
-      <input id="postcodeInput" placeholder="" value={postcodeInputValue} onChange={e => setpostcodeInputValue(e.target.value)} />
-      <button onClick={() => setSearchParams({ "postcode": postcodeInputValue })}>Search</button>
-      {crimeNavigation}
-      {crimeTables}
+      <div>
+        <label htmlFor="postcodeInput">Postcode/s: </label>
+        <input id="postcodeInput" placeholder="" value={postcodeInputValue} onChange={e => setpostcodeInputValue(e.target.value)} />
+        <button onClick={() => handleSubmit(postcodeInputValue)}>Search</button>
+      </div>
+      <div style={{ display: "flex" }}>
+        <div style={{ flex: 1 }}>
+          {crimeNavigation}
+        </div>
+        <div style={{ flex: 2 }}>
+          {crimeTables}
+        </div>
+        <div style={{ flex: 1 }}>
+          <h1>Map</h1>
+        </div>
+        <div style={{ flex: 1 }}>
+          <h1>History</h1>
+          <History removeEntry={(e: any) => removeEntry(e)} entries={history} clearHistory={() => setHistory([])} updateParameters={(e: any) => handleSubmit(e.postcode)} title={"history"} />
+          <div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
