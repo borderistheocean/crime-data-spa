@@ -10,7 +10,6 @@ function App() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [crimesList, setCrimesList] = useState([] as any);
   const previousInputValue = useRef("");
-  const [inputWarning, setInputWarning] = useState(false);
   const stripWhitespace = (postcode: string) => {
     return postcode.replace(/ /g, '');
   };
@@ -22,23 +21,16 @@ function App() {
   useEffect(() => {
     const searchQuery = searchParams.get('postcode') as string;
 
-    const arePostcodesValid = (searchQuery: string) => {
-      let resultValid = true;
-      searchQuery && searchQuery.split(",").forEach((postcode) => {
-        if (!postcodeValidator(stripWhitespace(postcode), locale)) {
-          resultValid = false;
-        }
-      });
-      return resultValid;
-    }
-
     if (searchQuery) {
-      if (arePostcodesValid(searchQuery)) {
-        setCrimesList([]);
+      setCrimesList([]);
 
-        (async () => {
-          const reqArray = searchQuery.split(",").map((x) => `http://api.getthedata.com/postcode/${stripWhitespace(x)}`)
-          const fetchPostcodesLatLong = reqArray.map(endpoint => fetch(endpoint).then(response => response.json()));
+      (async () => {
+        const filterValidPostcodes = searchQuery.split(",").filter((postcode) => postcodeValidator(stripWhitespace(postcode), locale))
+
+        if (filterValidPostcodes.length > 0) {
+
+          const postCodeSearchRequests = filterValidPostcodes.map((x) => `http://api.getthedata.com/postcode/${stripWhitespace(x)}`)
+          const fetchPostcodesLatLong = postCodeSearchRequests.map(endpoint => fetch(endpoint).then(response => response.json()));
 
           // Process the requests and responses
           await Promise.all(fetchPostcodesLatLong)
@@ -81,15 +73,10 @@ function App() {
           if (previousInputValue.current === "" && searchQuery) {
             setpostcodeInputValue(searchQuery)
           }
-
-        })().catch(err => {
-          console.error(err);
-        });
-
-      } else {
-        console.log("bad input")
-        setInputWarning(true);
-      }
+        }
+      })().catch(err => {
+        console.error(err);
+      });
     }
   }, [searchParams]);
 
@@ -103,24 +90,28 @@ function App() {
 
   const crimeTables = crimesList.map((crimeData: any, index: number) =>
     <>
-      {crimeData.map((c: any, i: any) => (
+      {crimeData.map((crime: any) => (
         <>
-          <h1 id={c.type}>{c.type}</h1>
+          <h1 id={crime.type}>{crime.type}</h1>
           <table>
-            <tr>
-              <th>Postcode</th>
-              <th>Month</th>
-              <th>Street</th>
-              <th>Status</th>
-            </tr>
-            {c.entries.map((d: any, ix: any) => (
+            <thead>
               <tr>
-                <td>{d.location.postcode}</td>
-                <td>{d.month}</td>
-                <td>{d.location.street.name}</td>
-                <td>{(d.outcome_status) ? d.outcome_status.category : "ongoing"}</td>
+                <th>Postcode</th>
+                <th>Month</th>
+                <th>Street</th>
+                <th>Status</th>
               </tr>
-            ))}
+            </thead>
+            <tbody>
+              {crime.entries.map((details: any, i: any) => (
+                <tr key={i}>
+                  <td>{details.location.postcode}</td>
+                  <td>{details.month}</td>
+                  <td>{details.location.street.name}</td>
+                  <td>{(details.outcome_status) ? details.outcome_status.category : "ongoing"}</td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </>
       ))}
@@ -130,7 +121,7 @@ function App() {
   return (
     <div>
       <label htmlFor="postcodeInput">Postcode/s: </label>
-      <input style={{ "borderColor": (inputWarning ? "red" : "initial") }} id="postcodeInput" placeholder="" value={postcodeInputValue} onChange={e => setpostcodeInputValue(e.target.value)} />
+      <input id="postcodeInput" placeholder="" value={postcodeInputValue} onChange={e => setpostcodeInputValue(e.target.value)} />
       <button onClick={() => setSearchParams({ "postcode": postcodeInputValue })}>Search</button>
       {crimeNavigation}
       {crimeTables}
