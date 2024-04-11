@@ -11,9 +11,10 @@ function App() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [crimesList, setCrimesList] = useState([] as any);
   const storedhistory = JSON.parse(localStorage.getItem("history") || "[]");
-  const [history, setHistory] = useState(storedhistory)
-
+  const [history, setHistory] = useState(storedhistory);
+  const [resultTotal, setResultTotal] = useState(0);
   const previousInputValue = useRef("");
+
   const stripWhitespace = (postcode: string) => {
     return postcode.replace(/ /g, '');
   };
@@ -31,7 +32,7 @@ function App() {
 
     if (searchQuery) {
       setCrimesList([]);
-
+      setHistory((history: any) => [searchQuery, ...history]);
       (async () => {
         const filterValidPostcodes = searchQuery.split(",").filter((postcode) => postcodeValidator(stripWhitespace(postcode), locale))
 
@@ -57,6 +58,7 @@ function App() {
 
                   // Combine reponses into single dataset
                   const flatten = _.flatten(latLongResponses);
+                  setResultTotal(flatten.length);
 
                   // Chain reponses so they're grouped by category
                   const chained = _.chain(flatten).groupBy("category").map((value, key) => ({ type: key, entries: value })).value();
@@ -97,9 +99,10 @@ function App() {
 
   const crimeTables = crimesList.map((crimeData: any) =>
     <>
+      <h1>{`Showing ${resultTotal} crimes for ${searchParams.get('postcode') as string}`}</h1>
       {crimeData.map((crime: any) => (
         <>
-          <h1 id={crime.type}>{crime.type}</h1>
+          <h2 id={crime.type}>{crime.type}</h2>
           <table>
             <thead>
               <tr>
@@ -126,22 +129,29 @@ function App() {
   );
 
   const handleSubmit = (postCodeValue: any) => {
-    setSearchParams({ "postcode": postCodeValue });
+    if(postCodeValue === searchParams.get('postcode') as string){
+      window.location.reload();
+    } else {
+      setSearchParams({ "postcode": postCodeValue });
+    }
+  };
 
-    if (history) if (history.indexOf(postCodeValue) === -1)
-      setHistory([...history, postCodeValue]);
-  }
+  const handleSubmitHistory = (postCodeValue: any) => {
+    handleSubmit(postCodeValue);
+    setpostcodeInputValue(postCodeValue);
+  };
 
   const removeEntry = (entryToRemove: any) => {
-    const newHistory = history.filter((entry: any) => entry !== entryToRemove);
-    setHistory(newHistory);
+    const newHistory = history.filter((entry: any, index: any) => index !== entryToRemove);
 
-    if (entryToRemove === searchParams.get('postcode') as string) {
+    if (history[entryToRemove] === searchParams.get('postcode') as string) {
       setSearchParams({ "postcode": "" });
       setCrimesList([]);
       setpostcodeInputValue("");
     }
-  }
+
+    setHistory(newHistory);
+  };
 
   return (
     <div>
@@ -162,7 +172,7 @@ function App() {
         </div>
         <div style={{ flex: 1 }}>
           <h1>History</h1>
-          <History removeEntry={(e: any) => removeEntry(e)} entries={history} clearHistory={() => setHistory([])} updateParameters={(e: any) => handleSubmit(e.postcode)} title={"history"} />
+          <History removeEntry={(e: any) => removeEntry(e)} entries={history} clearHistory={() => setHistory([])} updateParameters={(e: any) => handleSubmitHistory(e.postcode)} title={"history"} />
           <div>
           </div>
         </div>

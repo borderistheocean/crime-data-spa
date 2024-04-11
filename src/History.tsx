@@ -11,7 +11,7 @@ function History(props: any) {
     <div>
       <button onClick={props.clearHistory}>Clear</button>
       {history && history.filter((entry: any) => typeof entry === "string").map((details: any, index: any) => (
-        <><div><button onClick={() => props.removeEntry(details)}>x</button><span onClick={() => props.updateParameters({ "postcode": details })}>{details}</span></div></>
+        <><div><button onClick={() => props.removeEntry(index)}>x</button><span onClick={() => props.updateParameters({ "postcode": details })}>{details}</span></div></>
       ))}
     </div>
   );
