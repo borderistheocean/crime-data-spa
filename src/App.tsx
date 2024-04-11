@@ -3,12 +3,15 @@ import "./App.css";
 import { postcodeValidator } from "postcode-validator";
 import { useSearchParams } from "react-router-dom";
 import _ from "lodash";
-import History from "./History";
+import History from "./History/History";
+import date from 'date-and-time';
+import Navigation from "./Navigation/Navigation";
+import Map from "./Map/Map";
 
 function App() {
   const locale = "GB";
   const [postcodeInputValue, setpostcodeInputValue] = useState("");
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams("");
   const [crimesList, setCrimesList] = useState([] as any);
   const storedhistory = JSON.parse(localStorage.getItem("history") || "[]");
   const [history, setHistory] = useState(storedhistory);
@@ -31,8 +34,11 @@ function App() {
     const searchQuery = searchParams.get('postcode') as string;
 
     if (searchQuery) {
+      const now = new Date();
+      const timeAndDateNow = date.format(now, 'DD/MM/YYYY HH:mm:ss');
+    
       setCrimesList([]);
-      setHistory((history: any) => [searchQuery, ...history]);
+      setHistory((history: any) => [{ "postcode": searchQuery, "time": timeAndDateNow }, ...history]);
       (async () => {
         const filterValidPostcodes = searchQuery.split(",").filter((postcode) => postcodeValidator(stripWhitespace(postcode), locale))
 
@@ -70,7 +76,19 @@ function App() {
                     });
                   });
 
+                  // Replace dashes for types and change casing 
+                  _.forEach(chained, function (crimes){
+                    crimes.type = crimes.type.replace(/-/g, " ");
+                    crimes.type = crimes.type.replace(/(^|\s)[a-z]/gi, l => l.toUpperCase());
+                  });
+
+                  console.log("chained")
+                  console.log(chained)
+
                   setCrimesList((crimesList: any) => [...crimesList, chained]);
+                  console.log("crimesList")
+                  console.log(crimesList)
+
                 });
             })
             .catch(error => {
@@ -88,14 +106,6 @@ function App() {
       });
     }
   }, [searchParams]);
-
-  const crimeNavigation = crimesList.map((crimeData: any, index: number) =>
-    <ul key={index.toString()}>
-      {crimeData.map((c: any, i: any) => (
-        <li key={i}><a href={`#${c.type}`}>{c.type}</a></li>
-      ))}
-    </ul>
-  );
 
   const crimeTables = crimesList.map((crimeData: any) =>
     <>
@@ -129,7 +139,7 @@ function App() {
   );
 
   const handleSubmit = (postCodeValue: any) => {
-    if(postCodeValue === searchParams.get('postcode') as string){
+    if (postCodeValue === searchParams.get('postcode') as string) {
       window.location.reload();
     } else {
       setSearchParams({ "postcode": postCodeValue });
@@ -144,7 +154,7 @@ function App() {
   const removeEntry = (entryToRemove: any) => {
     const newHistory = history.filter((entry: any, index: any) => index !== entryToRemove);
 
-    if (history[entryToRemove] === searchParams.get('postcode') as string) {
+    if (history[entryToRemove].postcode === searchParams.get('postcode') as string) {
       setSearchParams({ "postcode": "" });
       setCrimesList([]);
       setpostcodeInputValue("");
@@ -162,13 +172,14 @@ function App() {
       </div>
       <div style={{ display: "flex" }}>
         <div style={{ flex: 1 }}>
-          {crimeNavigation}
+          <Navigation crimesList={crimesList}/>
         </div>
         <div style={{ flex: 2 }}>
           {crimeTables}
         </div>
         <div style={{ flex: 1 }}>
           <h1>Map</h1>
+          <Map/>
         </div>
         <div style={{ flex: 1 }}>
           <h1>History</h1>
