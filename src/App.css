@@ -1,0 +1,34 @@
+body {
+  background: #f8f6f5;
+  margin: 0;
+  font-family: sans-serif;
+}
+
+#appCrimesInput {
+  color: white;
+  background: #1171bc;
+  padding: 15px;
+}
+
+#appCrimesInput input, #appCrimesInput button{
+  padding:4
+}
+
+#appCrimesNav,
+#appCrimesList,
+#appCrimesMap,
+#appCrimesHist {
+  padding: 10px;
+}
+
+#appCrimesList{
+  background: white;
+}
+
+#appCrimesList table {
+  width: 100%;
+}
+
+#appCrimesList table th {
+  text-align: left;
+}

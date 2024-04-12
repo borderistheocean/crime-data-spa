@@ -7,6 +7,7 @@ import History from "./History/History";
 import date from 'date-and-time';
 import Navigation from "./Navigation/Navigation";
 import Map from "./Map/Map";
+import CrimeRecords from "./CrimeRecords/CrimeRecords";
 
 function App() {
   const locale = "GB";
@@ -36,8 +37,9 @@ function App() {
     if (searchQuery) {
       const now = new Date();
       const timeAndDateNow = date.format(now, 'DD/MM/YYYY HH:mm:ss');
-    
+
       setCrimesList([]);
+      setResultTotal(0);
       setHistory((history: any) => [{ "postcode": searchQuery, "time": timeAndDateNow }, ...history]);
       (async () => {
         const filterValidPostcodes = searchQuery.split(",").filter((postcode) => postcodeValidator(stripWhitespace(postcode), locale))
@@ -77,18 +79,12 @@ function App() {
                   });
 
                   // Replace dashes for types and change casing 
-                  _.forEach(chained, function (crimes){
+                  _.forEach(chained, function (crimes) {
                     crimes.type = crimes.type.replace(/-/g, " ");
                     crimes.type = crimes.type.replace(/(^|\s)[a-z]/gi, l => l.toUpperCase());
                   });
 
-                  console.log("chained")
-                  console.log(chained)
-
                   setCrimesList((crimesList: any) => [...crimesList, chained]);
-                  console.log("crimesList")
-                  console.log(crimesList)
-
                 });
             })
             .catch(error => {
@@ -109,7 +105,6 @@ function App() {
 
   const crimeTables = crimesList.map((crimeData: any) =>
     <>
-      <h1>{`Showing ${resultTotal} crimes for ${searchParams.get('postcode') as string}`}</h1>
       {crimeData.map((crime: any) => (
         <>
           <h2 id={crime.type}>{crime.type}</h2>
@@ -164,25 +159,25 @@ function App() {
   };
 
   return (
-    <div>
-      <div>
+    <div id={"appWrapper"}>
+      <div id={"appCrimesInput"}>
         <label htmlFor="postcodeInput">Postcode/s: </label>
         <input id="postcodeInput" placeholder="" value={postcodeInputValue} onChange={e => setpostcodeInputValue(e.target.value)} />
         <button onClick={() => handleSubmit(postcodeInputValue)}>Search</button>
       </div>
       <div style={{ display: "flex" }}>
-        <div style={{ flex: 1 }}>
-          <Navigation crimesList={crimesList}/>
+        <div id={"appCrimesNav"} style={{ flex: 1 }}>
+          <h3>Navigate by crime type</h3>
+          <Navigation crimesList={crimesList} />
+          <h3>Map</h3>
+          <Map />
         </div>
-        <div style={{ flex: 2 }}>
-          {crimeTables}
+        <div id={"appCrimesList"} style={{ flex: 4 }}>
+          <h1>{`Showing ${resultTotal} crimes for ${searchParams.get('postcode') as string}`}</h1>
+          <CrimeRecords crimesList={crimesList}/>
         </div>
-        <div style={{ flex: 1 }}>
-          <h1>Map</h1>
-          <Map/>
-        </div>
-        <div style={{ flex: 1 }}>
-          <h1>History</h1>
+        <div id={"appCrimesHist"} style={{ flex: 1 }}>
+          <h3>Search history</h3>
           <History removeEntry={(e: any) => removeEntry(e)} entries={history} clearHistory={() => setHistory([])} updateParameters={(e: any) => handleSubmitHistory(e.postcode)} title={"history"} />
           <div>
           </div>

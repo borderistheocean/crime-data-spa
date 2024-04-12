@@ -1,6 +1,95 @@
-# Getting Started with Create React App
+# Crime Data Frontend Tech Test
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+I have created this project to showcase my skills in React. It is based on the requirements spec for a Single Page Application. Details of such are as follows:
+
+We would like you to build a small SPA using React and React Router that allows a user to search crime data by postcodes.
+
+At a minimum, the SPA should have a Search Bar, and Historic Search section, and have two distinct screens: a Data View screen and a Map screen of the crime data.
+
+You can either create both screens or just a single one with a placeholder for the one that does not get implemented, the choice is yours. However, do build as if both screens were being made.
+
+### Requirements
+
+#### Search Bar
+
+- Allow the user to search by postcode
+- Allow the user to search by postcodes using a comma-separated list
+- Only trigger a search when at least one valid postcode has been entered
+- The query string should be updated to reflect the current list of valid postcodes
+- If the page is loaded with postcodes within the query string it should trigger a search on those postcodes
+- Make sure not to trigger too many requests
+
+### Data View
+
+- Display an individual section for each crime type under which is a table
+- Each Table should display at a minimum the following values
+    - Postcode
+    - Date of crime
+    - Approximate street name
+    - Outcome status
+        - Treat a null value in this field as 'On Going'
+- Give the user the ability to quickly navigate to different crime types
+
+ ### Map
+
+- View automatically centers on the searched postcode
+- In the case of multiple postcodes, center on the first item in the list
+- Display a mark on the map to show where each crime was committed
+- Show a boundary box of the postcode area
+- On hover of a mark should display a tooltip showing
+    - Postcode
+    - Category of crime
+    - Date of crime
+    - Outcome status
+        - Treat a null value in this field as 'On Going'
+
+### Nice to haves 
+
+- Cover your code with tests as much as you can
+
+### API to use
+
+#### Postcode
+
+- http://api.getthedata.com/postcode/
+
+#### Crime Data
+
+- https://data.police.uk/api/crimes-street/all-crime
+
+### Constraints
+
+- Use React V18
+- Use React Hooks
+- Use React Router
+- Do not leave any unused dependencies or scripts
+- Do not mock API response in your repository other than for tests
+
+### Preferences
+
+- Use TypeScript
+- Use any build tool or boilerplate configuration
+    - ViteJS
+    - Webpack,
+    - Create-react-app
+- Use any design framework you are familiar with
+    - Tailwind CSS
+    - MUI
+    - Ant Design
+
+### Evaluation Points
+
+- Use of community best practices
+- Use of clean code which is self-documenting
+- Use of domain-driven design Clean and extendable project structure
+- Consideration of UI/UX
+- Use of css-in-js
+- Use of design frameworks
+- Use of code quality checkers such as linters
+- Use of appropriate commit messages
+
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). 
 
 ## Available Scripts
 

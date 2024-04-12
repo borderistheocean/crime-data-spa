@@ -9,9 +9,9 @@ function History(props: any) {
 
   return (
     <div>
-      <button onClick={props.clearHistory}>Clear</button>
+      <button style={{ marginBottom: "10px" }} onClick={props.clearHistory}>Clear</button>
       {history && history.map((data: any, index: any) => (
-        <><div><button onClick={() => props.removeEntry(index)}>x</button><span onClick={() => props.updateParameters({ "postcode": data.postcode })}>{data.postcode}</span><div><i>{data.time}</i></div></div></>
+        <><div style={{ marginBottom: "5px" }}><span style={{ color: "#1171bc", cursor: "pointer", marginRight: "10px" }} onClick={() => props.removeEntry(index)}>x</span><span onClick={() => props.updateParameters({ "postcode": data.postcode })}>{data.postcode}</span><div><i>{data.time}</i></div></div></>
       ))}
     </div>
   );
