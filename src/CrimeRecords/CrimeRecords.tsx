@@ -1,11 +1,12 @@
-function CrimeRecords(props: any) {
+import "./CrimeRecords.scss";
 
+function CrimeRecords(props: any) {
   const crimeTables = props.crimesList.map((crimeData: any) =>
     <>
       {crimeData.map((crime: any) => (
         <>
           <h2 id={crime.type}>{crime.type}</h2>
-          <table>
+          <table className={"crimesTable"}>
             <thead>
               <tr>
                 <th>Postcode</th>

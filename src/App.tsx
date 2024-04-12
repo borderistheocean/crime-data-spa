@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import "./App.css";
+import "./App.scss";
 import { postcodeValidator } from "postcode-validator";
 import { useSearchParams } from "react-router-dom";
 import _ from "lodash";
@@ -103,36 +103,6 @@ function App() {
     }
   }, [searchParams]);
 
-  const crimeTables = crimesList.map((crimeData: any) =>
-    <>
-      {crimeData.map((crime: any) => (
-        <>
-          <h2 id={crime.type}>{crime.type}</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Postcode</th>
-                <th>Month</th>
-                <th>Street</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {crime.entries.map((details: any, index: any) => (
-                <tr key={index}>
-                  <td>{details.location.postcode}</td>
-                  <td>{details.month}</td>
-                  <td>{details.location.street.name}</td>
-                  <td>{(details.outcome_status) ? details.outcome_status.category : "ongoing"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </>
-      ))}
-    </>
-  );
-
   const handleSubmit = (postCodeValue: any) => {
     if (postCodeValue === searchParams.get('postcode') as string) {
       window.location.reload();
@@ -160,12 +130,20 @@ function App() {
 
   return (
     <div id={"appWrapper"}>
-      <div id={"appCrimesInput"}>
-        <label htmlFor="postcodeInput">Postcode/s: </label>
-        <input id="postcodeInput" placeholder="" value={postcodeInputValue} onChange={e => setpostcodeInputValue(e.target.value)} />
-        <button onClick={() => handleSubmit(postcodeInputValue)}>Search</button>
+      <div id={"appCrimesBanner"} style={{ display: "flex" }}>
+        <div id={"appCrimesTitle"} style={{ flex: 1 }}>
+          Crime Data SPA
+        </div>
+        <div id={"appCrimesInputWrapper"} style={{ flex: 4, display: "flex", flexDirection: "row", alignItems: "center" }}>
+          <div id={"appCrimesInput"}>
+            <input placeholder={""} value={postcodeInputValue} onChange={e => setpostcodeInputValue(e.target.value)} />
+            <button onClick={() => handleSubmit(postcodeInputValue)}>Search</button>
+          </div>
+        </div>
+        <div id={"appCrimesStub"} style={{ flex: 1 }}>
+        </div>
       </div>
-      <div style={{ display: "flex" }}>
+      <div id={"appMain"} style={{ display: "flex" }}>
         <div id={"appCrimesNav"} style={{ flex: 1 }}>
           <h3>Navigate by crime type</h3>
           <Navigation crimesList={crimesList} />
@@ -174,9 +152,9 @@ function App() {
         </div>
         <div id={"appCrimesList"} style={{ flex: 4 }}>
           <h1>{`Showing ${resultTotal} crimes for ${searchParams.get('postcode') as string}`}</h1>
-          <CrimeRecords crimesList={crimesList}/>
+          <CrimeRecords crimesList={crimesList} />
         </div>
-        <div id={"appCrimesHist"} style={{ flex: 1 }}>
+        <div id={"appCrimesHistory"} style={{ flex: 1 }}>
           <h3>Search history</h3>
           <History removeEntry={(e: any) => removeEntry(e)} entries={history} clearHistory={() => setHistory([])} updateParameters={(e: any) => handleSubmitHistory(e.postcode)} title={"history"} />
           <div>

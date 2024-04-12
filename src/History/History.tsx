@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./History.scss";
 
 function History(props: any) {
   const [history, setHistory] = useState(props.entries);
@@ -8,11 +9,17 @@ function History(props: any) {
   }, [props]);
 
   return (
-    <div>
-      <button style={{ marginBottom: "10px" }} onClick={props.clearHistory}>Clear</button>
+    <div id={"searchHistoryEntries"}>
+      <button id={"clearHistoryBtn"} onClick={props.clearHistory}>Clear</button>
+      <table>
       {history && history.map((data: any, index: any) => (
-        <><div style={{ marginBottom: "5px" }}><span style={{ color: "#1171bc", cursor: "pointer", marginRight: "10px" }} onClick={() => props.removeEntry(index)}>x</span><span onClick={() => props.updateParameters({ "postcode": data.postcode })}>{data.postcode}</span><div><i>{data.time}</i></div></div></>
+        <tr className={"history-entry"}>
+          <td><span className={"postcode-entry"} onClick={() => props.updateParameters({ "postcode": data.postcode })}>{data.postcode}</span></td>
+          <td><span className={"timestamp-entry"}>{data.time}</span></td>
+          <td><small className={"remove-entry"} onClick={() => props.removeEntry(index)}>Remove</small></td>
+        </tr>
       ))}
+      </table>
     </div>
   );
 }

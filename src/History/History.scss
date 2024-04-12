@@ -1,0 +1,18 @@
+#searchHistoryEntries {
+	#clearHistoryBtn {
+		margin-bottom: 10px;
+	}
+
+	.history-entry {
+		.timestamp-entry {
+			font-size: small;
+		}
+
+		small.remove-entry {
+			color: #1171bc;
+			cursor: pointer;
+			margin-right: 10px;
+			font-size: 12px;
+		}
+	}
+}

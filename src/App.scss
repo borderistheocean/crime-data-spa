@@ -1,0 +1,56 @@
+body {
+  background: #f8f6f5;
+  margin: 0;
+  font-family: sans-serif;
+}
+
+#appWrapper {
+  #appCrimesBanner {
+    color: white;
+    background: #1171bc;
+
+    #appCrimesTitle {
+      padding: 20px;
+    }
+
+    #appCrimesInputWrapper {
+      padding: 20px;
+
+      #appCrimesInput {
+        margin-left: auto;
+      }
+
+      #appCrimesInput input,
+      #appCrimesInput button {
+        padding: 4
+      }
+    }
+
+    #appCrimesStub {
+      padding: 20px;
+    }
+  }
+}
+
+#appMain {
+  position: fixed;
+  width: 100vw;
+  height: calc(100vh - 61.33px);
+
+  #appCrimesNav,
+  #appCrimesList,
+  #appCrimesMap,
+  #appCrimesHistory {
+    padding: 20px;
+  }
+
+  #appCrimesList {
+    background: white;
+    overflow-y: auto;
+  }
+
+  #appCrimesHistory {
+    padding: 20px;
+    overflow-y: auto;
+  }
+}
