@@ -1,7 +1,7 @@
 import "./CrimeRecords.scss";
 
 function CrimeRecords(props: any) {
-  const crimeTables = props.crimesList.map((crimeData: any) => {
+  const crimeTables = props.crimesList.map((crimeData: any) => (
     <>
       {crimeData.map((crime: any) => (
         <>
@@ -29,13 +29,11 @@ function CrimeRecords(props: any) {
         </>
       ))}
     </>
-  }
+  )
   );
 
   return (
-    <>
-      {crimeTables}
-    </>
+    <>{crimeTables}</>
   );
 }
 
