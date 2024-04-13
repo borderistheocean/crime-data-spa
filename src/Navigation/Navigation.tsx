@@ -10,7 +10,9 @@ function Navigation(props: any) {
   );
 
   return (
-    <>{crimeNavigation}</>
+    <>
+      {crimeNavigation}
+    </>
   );
 }
 
