@@ -16,6 +16,7 @@
     "@types/node": "^16.18.94",
     "@types/react": "^18.2.74",
     "@types/react-dom": "^18.2.23",
+    "antd": "^5.17.0",
     "autoprefixer": "^10.4.19",
     "axios": "^1.6.8",
     "date-and-time": "^3.1.1",

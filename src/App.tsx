@@ -7,6 +7,8 @@ import date from 'date-and-time';
 import Navigation from "./Navigation/Navigation";
 import Map from "./Map/Map";
 import CrimeRecords from "./CrimeRecords/CrimeRecords";
+import { Space } from 'antd';
+import Search from "antd/es/input/Search";
 
 function App() {
   const locale = "GB";
@@ -131,13 +133,23 @@ function App() {
     <div className="flex flex-col h-screen">
       <header className="bg-gray-400">
         <div className="flex text-white bg-blue-500 shadow-md">
-          <div className="flex-1 p-5">
+          <div className="flex flex-row items-center flex-1 p-5 ">
             Crime Data SPA
           </div>
           <div className="p-5">
             <div>
-              <input placeholder={""} value={postcodeInputValue} onChange={e => setpostcodeInputValue(e.target.value)} />
-              <button onClick={() => handleSubmit(postcodeInputValue)}>Search</button>
+              <Space direction="vertical">
+                <Search
+                  id={"postCodeSearchInput"}
+                  placeholder="Enter one or more postcodes"
+                  onChange={e => setpostcodeInputValue(e.target.value)}
+                  value={postcodeInputValue}
+                  onSearch={() => handleSubmit(postcodeInputValue)}
+                  style={{
+                    width: 250
+                  }}
+                />
+              </Space>
             </div>
           </div>
         </div>
