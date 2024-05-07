@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import "./App.scss";
 import { postcodeValidator } from "postcode-validator";
 import { useSearchParams } from "react-router-dom";
 import _ from "lodash";
@@ -129,38 +128,41 @@ function App() {
   };
 
   return (
-    <div id={"appWrapper"}>
-      <div id={"appCrimesBanner"} style={{ display: "flex" }}>
-        <div id={"appCrimesTitle"} style={{ flex: 1 }}>
-          Crime Data SPA
-        </div>
-        <div id={"appCrimesInputWrapper"} style={{ flex: 4, display: "flex", flexDirection: "row", alignItems: "center" }}>
-          <div id={"appCrimesInput"}>
-            <input placeholder={""} value={postcodeInputValue} onChange={e => setpostcodeInputValue(e.target.value)} />
-            <button onClick={() => handleSubmit(postcodeInputValue)}>Search</button>
+    <div className="flex flex-col h-screen">
+      <header className="bg-gray-400">
+        <div className="flex text-white bg-blue-500 shadow-md">
+          <div className="flex-1 p-5">
+            Crime Data SPA
+          </div>
+          <div className="p-5">
+            <div>
+              <input placeholder={""} value={postcodeInputValue} onChange={e => setpostcodeInputValue(e.target.value)} />
+              <button onClick={() => handleSubmit(postcodeInputValue)}>Search</button>
+            </div>
           </div>
         </div>
-        <div id={"appCrimesStub"} style={{ flex: 1 }}>
-        </div>
-      </div>
-      <div id={"appMain"} style={{ display: "flex" }}>
-        <div id={"appCrimesNav"} style={{ flex: 1 }}>
-          <h3>Navigate by crime type</h3>
-          <Navigation crimesList={crimesList} />
-          <h3>Map</h3>
-          <Map />
-        </div>
-        <div id={"appCrimesList"} style={{ flex: 4 }}>
-          <h1>{`Showing ${resultTotal} crimes for ${searchParams.get('postcode') as string}`}</h1>
-          <CrimeRecords crimesList={crimesList} />
-        </div>
-        <div id={"appCrimesHistory"} style={{ flex: 1 }}>
-          <h3>Search history</h3>
-          <History removeEntry={(e: any) => removeEntry(e)} entries={history} clearHistory={() => setHistory([])} updateParameters={(e: any) => handleSubmitHistory(e.postcode)} title={"history"} />
-          <div>
+      </header>
+      <main className="flex-grow overflow-hidden">
+        <div className="flex h-full">
+          <div className="flex-auto w-1/4 p-5 overflow-y-auto">
+            <h3>Navigate by crime type</h3>
+            <Navigation crimesList={crimesList} />
+            <h3>Map</h3>
+            <Map />
+          </div>
+          <div className="flex-auto w-2/4	p-5 overflow-y-auto">
+            <h1>{`Showing ${resultTotal} crimes for ${searchParams.get('postcode') as string}`}</h1>
+            <CrimeRecords crimesList={crimesList} />
+          </div>
+          <div className="flex-auto w-1/4 overflow-y-auto">
+            <h3>Search history</h3>
+            <History removeEntry={(e: any) => removeEntry(e)} entries={history} clearHistory={() => setHistory([])} updateParameters={(e: any) => handleSubmitHistory(e.postcode)} title={"history"} />
+            <div>
+            </div>
           </div>
         </div>
-      </div>
+      </main>
+      <footer className="bg-blue-400">Footer</footer>
     </div>
   );
 }
