@@ -1,6 +1,10 @@
+import { Menu } from "antd";
 import "./Navigation.scss";
+import { data } from "autoprefixer";
 
 function Navigation(props: any) {
+
+
   const crimeNavigation = props.crimesList.map((crimeData: any, index: number) =>
     <ul id={"crimesNavigationList"} key={index.toString()}>
       {crimeData.map((c: any, i: any) => (
@@ -9,11 +13,11 @@ function Navigation(props: any) {
     </ul>
   );
 
-  return (
-    <>
-      {crimeNavigation}
-    </>
-  );
+return (
+  <>
+    {crimeNavigation}
+  </>
+);
 }
 
 export default Navigation;

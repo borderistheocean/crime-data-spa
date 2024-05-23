@@ -2,13 +2,13 @@ import { Table } from "antd";
 
 function CrimeTable(props: any) {
 
-  const dataSource = props.data.map((element: any, index: any) => {
+  const dataSource = props.data.map((crimeData: any, index: any) => {
     return { 
       key: index,
-      postcode: element.location.postcode, 
-      month: element.month,
-      street: element.location.street.name,
-      status: (element.outcome_status) ? element.outcome_status.category : "ongoing"
+      postcode: crimeData.location.postcode, 
+      month: crimeData.month,
+      street: crimeData.location.street.name,
+      status: (crimeData.outcome_status) ? crimeData.outcome_status.category : "ongoing"
     }
   });
 

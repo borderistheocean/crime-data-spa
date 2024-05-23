@@ -7,9 +7,12 @@ import date from 'date-and-time';
 import Navigation from "./Navigation/Navigation";
 import Map from "./Map/Map";
 import CrimeRecords from "./CrimeRecords/CrimeRecords";
-import { Space } from 'antd';
+import { Layout, Space } from 'antd';
 import Search from "antd/es/input/Search";
 import Text from "antd/es/typography/Text";
+import Sider from "antd/es/layout/Sider";
+import { Content, Footer, Header } from "antd/es/layout/layout";
+import "./App.scss";
 
 function App() {
   const locale = "GB";
@@ -131,43 +134,51 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col h-screen">
-      <header className="bg-gray-400">
-        <div className="flex text-white bg-blue-500 shadow-md">
-          <div className="flex flex-row items-center flex-1 p-5 ">
-            Crime Data SPA
-          </div>
-          <div className="p-5">
-            <div>
-              <Space direction="vertical">
-                <Search
-                  id={"postCodeSearchInput"}
-                  placeholder="Enter one or more postcodes"
-                  onChange={e => setpostcodeInputValue(e.target.value)}
-                  value={postcodeInputValue}
-                  onSearch={() => handleSubmit(postcodeInputValue)}
-                  style={{
-                    width: 250
-                  }}
-                />
-              </Space>
-            </div>
-          </div>
-        </div>
-      </header>
-      <main className="flex-grow overflow-hidden">
+    <>
+      <div >
+        <Layout className="h-screen w-screen">
+          <Sider>
+            
+         <div className="flex h-full">
+           <div className="flex-auto w-1/4 p-5 overflow-y-auto">
+             {(resultTotal !== 0) &&
+               <>
+                 <Text>Navigate by crime type</Text>
+                 <Navigation crimesList={crimesList} />
+                 <Text>Map</Text>
+                 <Map/>
+               </>
+             }
+           </div>
+    </div>
+
+          </Sider>
+          <Layout>
+            <Header>
+
+
+                    <h1>Crime Data SPA</h1>
+
+                    <Space direction="vertical">
+                      <Search
+                        id={"postCodeSearchInput"}
+                        placeholder="Enter one or more postcodes"
+                        onChange={e => setpostcodeInputValue(e.target.value)}
+                        value={postcodeInputValue}
+                        onSearch={() => handleSubmit(postcodeInputValue)}
+                        style={{
+                          width: 250
+                        }}
+                      />
+                    </Space>
+ 
+
+            </Header>
+            <Content>
+              
         <div className="flex h-full">
-          <div className="flex-auto w-1/4 p-5 overflow-y-auto">
-            {(resultTotal !== 0) &&
-              <>
-                <Text>Navigate by crime type</Text>
-                <Navigation crimesList={crimesList} />
-                <Text>Map</Text>
-                <Map/>
-              </>
-            }
-          </div>
-          <div className="flex-auto w-2/4	p-5 overflow-y-auto">
+
+          <div className="flex-auto w-3/4	p-5 overflow-y-auto">
             {(resultTotal === 0) &&
               <div className="flex items-center justify-center w-full h-full">
                 <div>
@@ -194,9 +205,80 @@ function App() {
             </div>
           </div>
         </div>
-      </main>
-      <footer className="bg-gray-100 p-1 text-xs text-center">An SPA by Luke Rakowski</footer>
-    </div>
+
+            </Content>
+            <Footer>An SPA by Luke Rakowski</Footer>
+          </Layout>
+        </Layout>
+      </div>
+    </>
+
+    // <div className="flex flex-col h-screen">
+    //   <header className="bg-gray-400">
+    //     <div className="flex text-white bg-blue-500 shadow-md">
+    //       <div className="flex flex-row items-center flex-1 p-5 ">
+    //         Crime Data SPA
+    //       </div>
+    //       <div className="p-5">
+    //         <div>
+    //           <Space direction="vertical">
+    //             <Search
+    //               id={"postCodeSearchInput"}
+    //               placeholder="Enter one or more postcodes"
+    //               onChange={e => setpostcodeInputValue(e.target.value)}
+    //               value={postcodeInputValue}
+    //               onSearch={() => handleSubmit(postcodeInputValue)}
+    //               style={{
+    //                 width: 250
+    //               }}
+    //             />
+    //           </Space>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   </header>
+      // <main className="flex-grow overflow-hidden">
+      //   <div className="flex h-full">
+      //     <div className="flex-auto w-1/4 p-5 overflow-y-auto">
+      //       {(resultTotal !== 0) &&
+      //         <>
+      //           <Text>Navigate by crime type</Text>
+      //           <Navigation crimesList={crimesList} />
+      //           <Text>Map</Text>
+      //           <Map/>
+      //         </>
+      //       }
+      //     </div>
+      //     <div className="flex-auto w-2/4	p-5 overflow-y-auto">
+      //       {(resultTotal === 0) &&
+      //         <div className="flex items-center justify-center w-full h-full">
+      //           <div>
+      //             {(searchParams.get('postcode') == null && resultTotal == 0) &&
+      //               <h2>Enter postcode/s to search for crimes.</h2>
+      //             }
+      //             {(searchParams.get('postcode') != null && resultTotal == 0) &&
+      //               <h2>No results found for {searchParams.get('postcode')}.</h2>
+      //             }
+      //           </div>
+      //         </div>
+      //       }
+      //       {(searchParams.get('postcode') != null && resultTotal > 0) &&
+      //         <>
+      //           <Text>{`Showing ${resultTotal} crimes for ${searchParams.get('postcode') as string}`}</Text>
+      //           <CrimeRecords crimesList={crimesList} />
+      //         </>
+      //       }
+      //     </div>
+      //     <div className="flex-auto w-1/4 p-5 overflow-y-auto">
+      //       <h3>Search history</h3>
+      //       <History removeEntry={(e: any) => removeEntry(e)} entries={history} clearHistory={() => setHistory([])} updateParameters={(e: any) => handleSubmitHistory(e.postcode)} title={"history"} />
+      //       <div>
+      //       </div>
+      //     </div>
+      //   </div>
+      // </main>
+    //   <footer className="bg-gray-100 p-1 text-xs text-center">An SPA by Luke Rakowski</footer>
+    // </div>
   );
 }
 
