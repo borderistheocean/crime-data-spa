@@ -1,3 +1,5 @@
+import Title from "antd/es/typography/Title";
+import CrimeTable from "../CrimeTable/CrimeTable";
 import "./CrimeRecords.scss";
 
 function CrimeRecords(props: any) {
@@ -5,27 +7,8 @@ function CrimeRecords(props: any) {
     <>
       {crimeData.map((crime: any) => (
         <>
-          <h2 id={crime.type}>{crime.type}</h2>
-          <table className={"crimesTable"}>
-            <thead>
-              <tr>
-                <th>Postcode</th>
-                <th>Month</th>
-                <th>Street</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {crime.entries.map((details: any, index: any) => (
-                <tr key={index}>
-                  <td>{details.location.postcode}</td>
-                  <td>{details.month}</td>
-                  <td>{details.location.street.name}</td>
-                  <td>{(details.outcome_status) ? details.outcome_status.category : "ongoing"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Title level={3} id={crime.type}>{crime.type}</Title>
+          <CrimeTable data={crime.entries} />
         </>
       ))}
     </>
@@ -33,7 +16,9 @@ function CrimeRecords(props: any) {
   );
 
   return (
-    <>{crimeTables}</>
+    <>
+      <>{crimeTables}</>
+    </>
   );
 }
 

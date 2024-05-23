@@ -9,6 +9,7 @@ import Map from "./Map/Map";
 import CrimeRecords from "./CrimeRecords/CrimeRecords";
 import { Space } from 'antd';
 import Search from "antd/es/input/Search";
+import Text from "antd/es/typography/Text";
 
 function App() {
   const locale = "GB";
@@ -157,16 +158,36 @@ function App() {
       <main className="flex-grow overflow-hidden">
         <div className="flex h-full">
           <div className="flex-auto w-1/4 p-5 overflow-y-auto">
-            <h3>Navigate by crime type</h3>
-            <Navigation crimesList={crimesList} />
-            <h3>Map</h3>
-            <Map />
+            {(resultTotal !== 0) &&
+              <>
+                <Text>Navigate by crime type</Text>
+                <Navigation crimesList={crimesList} />
+                <Text>Map</Text>
+                <Map/>
+              </>
+            }
           </div>
           <div className="flex-auto w-2/4	p-5 overflow-y-auto">
-            <h1>{`Showing ${resultTotal} crimes for ${searchParams.get('postcode') as string}`}</h1>
-            <CrimeRecords crimesList={crimesList} />
+            {(resultTotal === 0) &&
+              <div className="flex items-center justify-center w-full h-full">
+                <div>
+                  {(searchParams.get('postcode') == null && resultTotal == 0) &&
+                    <h2>Enter postcode/s to search for crimes.</h2>
+                  }
+                  {(searchParams.get('postcode') != null && resultTotal == 0) &&
+                    <h2>No results found for {searchParams.get('postcode')}.</h2>
+                  }
+                </div>
+              </div>
+            }
+            {(searchParams.get('postcode') != null && resultTotal > 0) &&
+              <>
+                <Text>{`Showing ${resultTotal} crimes for ${searchParams.get('postcode') as string}`}</Text>
+                <CrimeRecords crimesList={crimesList} />
+              </>
+            }
           </div>
-          <div className="flex-auto w-1/4 overflow-y-auto">
+          <div className="flex-auto w-1/4 p-5 overflow-y-auto">
             <h3>Search history</h3>
             <History removeEntry={(e: any) => removeEntry(e)} entries={history} clearHistory={() => setHistory([])} updateParameters={(e: any) => handleSubmitHistory(e.postcode)} title={"history"} />
             <div>
@@ -174,7 +195,7 @@ function App() {
           </div>
         </div>
       </main>
-      <footer className="bg-blue-400">Footer</footer>
+      <footer className="bg-gray-100 p-1 text-xs text-center">An SPA by Luke Rakowski</footer>
     </div>
   );
 }
