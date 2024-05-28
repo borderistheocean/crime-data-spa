@@ -1,23 +1,27 @@
-import { Menu } from "antd";
+import { Anchor } from "antd";
 import "./Navigation.scss";
-import { data } from "autoprefixer";
+import { useEffect, useState } from "react";
 
 function Navigation(props: any) {
+  const [anchorData, setAnchorData] = useState([]);
 
+  useEffect(() => {
+    const crimes = props.crimesList.map((c: any, i: any) => {
+        return { key: i.toString(), href: `#${c.type}`, title: c.type }
+      }
+    );
+    setAnchorData(crimes);
+  }, [props.crimesList]);
 
-  const crimeNavigation = props.crimesList.map((crimeData: any, index: number) =>
-    <ul id={"crimesNavigationList"} key={index.toString()}>
-      {crimeData.map((c: any, i: any) => (
-        <li key={i}><a href={`#${c.type}`}>{c.type}</a></li>
-      ))}
-    </ul>
+  return (
+    <>
+      <Anchor
+        affix={false}
+        getContainer={() => document.getElementById("crimesContainer")!}
+        items={anchorData}
+      />
+    </>
   );
-
-return (
-  <>
-    {crimeNavigation}
-  </>
-);
 }
 
 export default Navigation;
