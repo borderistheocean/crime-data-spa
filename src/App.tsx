@@ -7,7 +7,7 @@ import date from 'date-and-time';
 import Navigation from "./Navigation/Navigation";
 import Map from "./Map/Map";
 import CrimeRecords from "./CrimeRecords/CrimeRecords";
-import { Layout, Space } from 'antd';
+import { Layout, Space, Typography } from 'antd';
 import Search from "antd/es/input/Search";
 import Text from "antd/es/typography/Text";
 import Sider from "antd/es/layout/Sider";
@@ -137,37 +137,43 @@ function App() {
     <>
       <div>
         <Layout className="h-screen w-screen">
-          <Sider>
-            <div className="flex h-full">
-              <div className="flex justify-between flex-col overflow-y-auto">
-                {(resultTotal !== 0) &&
-                  <>
-                    <Navigation crimesList={crimesList} />
-                    <Map />
-                  </>
-                }
-              </div>
-            </div>
-          </Sider>
+          <Header>
+            <Typography.Title
+              level={4}
+              style={{
+                margin: 0,
+              }}      
+            >Crime Data SPA</Typography.Title>
+            <Space direction="vertical">
+              <Search
+                id={"postCodeSearchInput"}
+                placeholder="Enter one or more postcodes"
+                onChange={e => setpostcodeInputValue(e.target.value)}
+                value={postcodeInputValue}
+                onSearch={() => handleSubmit(postcodeInputValue)}
+                style={{
+                  width: 250
+                }}
+              />
+            </Space>
+          </Header>
           <Layout>
-            <Header>
-              <h1>Crime Data SPA</h1>
-              <Space direction="vertical">
-                <Search
-                  id={"postCodeSearchInput"}
-                  placeholder="Enter one or more postcodes"
-                  onChange={e => setpostcodeInputValue(e.target.value)}
-                  value={postcodeInputValue}
-                  onSearch={() => handleSubmit(postcodeInputValue)}
-                  style={{
-                    width: 250
-                  }}
-                />
-              </Space>
-            </Header>
+            <Sider
+              width={"15%"}>
+              <div className="flex h-full">
+                <div className="flex justify-between flex-col overflow-y-auto">
+                  {(resultTotal !== 0) &&
+                    <>
+                      <Navigation crimesList={crimesList} />
+                      <Map />
+                    </>
+                  }
+                </div>
+              </div>
+            </Sider>
             <Content>
               <div className="flex h-full">
-                <div id="crimesContainer" className="flex-auto w-3/4	p-5 overflow-y-auto">
+                <div id="crimesContainer" className="flex-auto w-3/4 overflow-y-auto bg-gray-50">
                   {(resultTotal === 0) &&
                     <div className="flex items-center justify-center w-full h-full">
                       <div>
@@ -182,13 +188,14 @@ function App() {
                   }
                   {(searchParams.get('postcode') != null && resultTotal > 0) &&
                     <>
-                      <Text>{`Showing ${resultTotal} crimes for ${searchParams.get('postcode') as string}`}</Text>
+                      <div className="sticky top-0 z-10 min-w-full flex items-center p-5 bg-white">
+                        <Text>{`Showing ${resultTotal} crimes for ${searchParams.get('postcode') as string}`}</Text>
+                      </div>
                       <CrimeRecords crimesList={crimesList} />
                     </>
                   }
                 </div>
-                <div className="flex-auto w-1/4 p-5 overflow-y-auto">
-                  <h3>Search history</h3>
+                <div className="flex-auto w-1/4 overflow-y-auto">
                   <History removeEntry={(e: any) => removeEntry(e)} entries={history} clearHistory={() => setHistory([])} updateParameters={(e: any) => handleSubmitHistory(e.postcode)} title={"history"} />
                   <div>
                   </div>

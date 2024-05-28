@@ -1,5 +1,4 @@
 import { Anchor } from "antd";
-import "./Navigation.scss";
 import { useEffect, useState } from "react";
 
 function Navigation(props: any) {
@@ -7,8 +6,8 @@ function Navigation(props: any) {
 
   useEffect(() => {
     const crimes = props.crimesList.map((c: any, i: any) => {
-        return { key: i.toString(), href: `#${c.type}`, title: c.type }
-      }
+      return { key: i.toString(), href: `#${c.type}`, title: c.type }
+    }
     );
     setAnchorData(crimes);
   }, [props.crimesList]);
@@ -16,7 +15,8 @@ function Navigation(props: any) {
   return (
     <>
       <Anchor
-      className="mt-10"
+        className="mt-5"
+        targetOffset={75}
         affix={false}
         getContainer={() => document.getElementById("crimesContainer")!}
         items={anchorData}

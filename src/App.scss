@@ -1,3 +1,5 @@
+$borders-color: #f9f6f6;
+
 .ant-layout-header,
 .ant-layout-footer {
   background: #ffffff;
@@ -5,19 +7,19 @@
 }
 
 .ant-layout-header {
-  padding: 25px;
+  padding: 35px 25px;
   line-height: normal;
-  flex: 0 0 auto;
   align-items: center;
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #d9d9d9;
+  background: rgb(255, 255, 255);
+  border-bottom: 2px solid #f1f0f0;
 }
 
 .ant-layout-sider {
   background: #ffffff !important;
   color: #000000;
-  border-right: 1px solid #d9d9d9;
+  border-right: 2px solid $borders-color;
 }
 
 .ant-layout-content {
