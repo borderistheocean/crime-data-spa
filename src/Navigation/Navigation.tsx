@@ -16,6 +16,7 @@ function Navigation(props: any) {
   return (
     <>
       <Anchor
+      className="mt-10"
         affix={false}
         getContainer={() => document.getElementById("crimesContainer")!}
         items={anchorData}

@@ -139,15 +139,11 @@ function App() {
         <Layout className="h-screen w-screen">
           <Sider>
             <div className="flex h-full">
-              <div className="flex justify-between flex-col p-5 overflow-y-auto">
+              <div className="flex justify-between flex-col overflow-y-auto">
                 {(resultTotal !== 0) &&
                   <>
-                    <div>
-                      <Navigation crimesList={crimesList} />
-                    </div>
-                    <div>
-                      <Map />
-                    </div>
+                    <Navigation crimesList={crimesList} />
+                    <Map />
                   </>
                 }
               </div>
@@ -198,7 +194,6 @@ function App() {
                   </div>
                 </div>
               </div>
-
             </Content>
           </Layout>
         </Layout>
