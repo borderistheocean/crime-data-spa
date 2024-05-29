@@ -3,7 +3,6 @@ import Navigation from './Navigation/Navigation';
 import History from './History/History';
 
 const mockNavigationData =
-  [
     [
       {
         "type": "Anti Social Behaviour"
@@ -14,7 +13,6 @@ const mockNavigationData =
       {
         "type": "Burglary"
       }
-    ]
   ];
 
 test('renders navigation', () => {
@@ -45,9 +43,9 @@ const mockHistoryData =
 
 test('renders history', () => {
   render(<History entries={mockHistoryData} />);
-  const historyClearButton = screen.getByText(/Clear/i);
+  const historyClearButton = screen.getByText(/Clear all/i);
   expect(historyClearButton).toBeInTheDocument();
-  const historyDeleteEntryButton = screen.findAllByText(/x/i);
+  const historyDeleteEntryButton = screen.findAllByDisplayValue(/Remove/i);
   expect(historyDeleteEntryButton).toBeInTheDocument();
   const historyEntry_1 = screen.getByText(/LE11AA/i);
   expect(historyEntry_1).toBeInTheDocument();
