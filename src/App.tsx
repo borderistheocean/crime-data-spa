@@ -151,6 +151,7 @@ function App() {
                 onChange={e => setpostcodeInputValue(e.target.value)}
                 value={postcodeInputValue}
                 onSearch={() => handleSubmit(postcodeInputValue)}
+                onPressEnter={() => handleSubmit(postcodeInputValue)}
                 style={{
                   width: 250
                 }}

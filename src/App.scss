@@ -1,4 +1,4 @@
-$borders-color: #f9f6f6;
+$borders-color: #efefef;
 
 .ant-layout-header,
 .ant-layout-footer {
@@ -13,13 +13,12 @@ $borders-color: #f9f6f6;
   display: flex;
   justify-content: space-between;
   background: rgb(255, 255, 255);
-  border-bottom: 2px solid #f1f0f0;
+  border-bottom: 2px solid $borders-color;
 }
 
 .ant-layout-sider {
   background: #ffffff !important;
   color: #000000;
-  border-right: 2px solid $borders-color;
 }
 
 .ant-layout-content {
