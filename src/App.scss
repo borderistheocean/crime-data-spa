@@ -1,0 +1,27 @@
+$borders-color: #efefef;
+
+.ant-layout-header,
+.ant-layout-footer {
+  background: #ffffff;
+  color: #000000;
+}
+
+.ant-layout-header {
+  padding: 35px 25px;
+  line-height: normal;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  background: rgb(255, 255, 255);
+  border-bottom: 2px solid $borders-color;
+}
+
+.ant-layout-sider {
+  background: #ffffff !important;
+  color: #000000;
+}
+
+.ant-layout-content {
+  background: #ffffff;
+  color: #000;
+}

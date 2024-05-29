@@ -1,17 +1,26 @@
-import "./Navigation.scss";
+import { Anchor } from "antd";
+import { useEffect, useState } from "react";
 
 function Navigation(props: any) {
-  const crimeNavigation = props.crimesList.map((crimeData: any, index: number) =>
-    <ul id={"crimesNavigationList"} key={index.toString()}>
-      {crimeData.map((c: any, i: any) => (
-        <li key={i}><a href={`#${c.type}`}>{c.type}</a></li>
-      ))}
-    </ul>
-  );
+  const [anchorData, setAnchorData] = useState([]);
+
+  useEffect(() => {
+    const crimes = props.crimesList.map((c: any, i: any) => {
+      return { key: i.toString(), href: `#${c.type}`, title: c.type }
+    }
+    );
+    setAnchorData(crimes);
+  }, [props.crimesList]);
 
   return (
     <>
-      {crimeNavigation}
+      <Anchor
+        className="mt-5"
+        targetOffset={75}
+        affix={false}
+        getContainer={() => document.getElementById("crimesContainer")!}
+        items={anchorData}
+      />
     </>
   );
 }

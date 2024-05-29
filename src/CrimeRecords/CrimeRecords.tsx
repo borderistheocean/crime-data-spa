@@ -1,17 +1,12 @@
 import Title from "antd/es/typography/Title";
 import CrimeTable from "../CrimeTable/CrimeTable";
-import "./CrimeRecords.scss";
 
 function CrimeRecords(props: any) {
   const crimeTables = props.crimesList.map((crimeData: any) => (
-    <>
-      {crimeData.map((crime: any) => (
-        <>
-          <Title level={3} id={crime.type}>{crime.type}</Title>
-          <CrimeTable data={crime.entries} />
-        </>
-      ))}
-    </>
+    <div className="m-5" id={crimeData.type}>
+      <Title level={3}>{crimeData.type}</Title>
+      <CrimeTable data={crimeData.entries} />
+    </div>
   )
   );
 
