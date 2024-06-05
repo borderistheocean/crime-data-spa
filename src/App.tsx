@@ -9,7 +9,6 @@ import Map from "./Map/Map";
 import CrimeRecords from "./CrimeRecords/CrimeRecords";
 import { Layout, Space, Typography } from 'antd';
 import Search from "antd/es/input/Search";
-import Text from "antd/es/typography/Text";
 import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
 import "./App.scss";
@@ -23,6 +22,7 @@ function App() {
   const [history, setHistory] = useState(storedhistory);
   const [resultTotal, setResultTotal] = useState(0);
   const previousInputValue = useRef("");
+  const { Text } = Typography;
 
   const stripWhitespace = (postcode: string) => {
     return postcode.replace(/ /g, '');
