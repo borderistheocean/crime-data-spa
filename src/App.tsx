@@ -90,6 +90,7 @@ function App() {
                   });
 
                   setCrimesList(chained);
+                  console.log(chained);
                 });
             })
             .catch(error => {

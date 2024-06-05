@@ -8,7 +8,7 @@ function CrimeTable(props: any) {
       postcode: crimeData.location.postcode, 
       month: crimeData.month,
       street: crimeData.location.street.name,
-      status: (crimeData.outcome_status) ? crimeData.outcome_status.category : "ongoing"
+      status: (crimeData.outcome_status) ? crimeData.outcome_status.category : "Ongoing"
     }
   });
 
