@@ -175,7 +175,7 @@ function App() {
             </Sider>
             <Content>
               <div className="flex h-full">
-                <div id="crimesContainer" className="flex-auto w-3/4 overflow-y-auto bg-gray-50">
+                <div id="crimesContainer" className="flex-auto w-3/4 overflow-y-auto bg-white">
                   {(resultTotal === 0) &&
                     <div className="flex items-center justify-center w-full h-full">
                       <div>

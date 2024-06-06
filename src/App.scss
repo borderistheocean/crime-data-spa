@@ -13,7 +13,8 @@ $borders-color: #efefef;
   display: flex;
   justify-content: space-between;
   background: rgb(255, 255, 255);
-  border-bottom: 2px solid $borders-color;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+  margin-bottom: 20px;
 }
 
 .ant-layout-sider {
@@ -21,7 +22,8 @@ $borders-color: #efefef;
   color: #000000;
 }
 
-.ant-layout-content {
+.ant-layout-content,
+.ant-layout {
   background: #ffffff;
   color: #000;
 }
