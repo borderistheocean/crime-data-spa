@@ -90,7 +90,6 @@ function App() {
                   });
 
                   setCrimesList(chained);
-                  console.log(chained);
                 });
             })
             .catch(error => {
@@ -180,10 +179,10 @@ function App() {
                     <div className="flex items-center justify-center w-full h-full">
                       <div>
                         {(searchParams.get('postcode') === null && resultTotal === 0) &&
-                          <h2>Enter postcode/s to search for crimes.</h2>
+                          <span>Enter postcode/s to search for crimes, entries such as B46QB and LE11AA usually yield good amounts of crime data.</span>
                         }
                         {(searchParams.get('postcode') != null && resultTotal === 0) &&
-                          <h2>No results found for {searchParams.get('postcode')}.</h2>
+                          <span>No results found for {searchParams.get('postcode')}.</span>
                         }
                       </div>
                     </div>
