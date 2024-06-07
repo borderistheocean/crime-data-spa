@@ -8,6 +8,8 @@ At a minimum, the SPA should have a Search Bar, and Historic Search section, and
 
 You can either create both screens or just a single one with a placeholder for the one that does not get implemented, the choice is yours. However, do build as if both screens were being made.
 
+#### Live demo: https://crime-data-spa.vercel.app/
+
 ### Requirements
 
 #### Search Bar
@@ -51,7 +53,7 @@ You can either create both screens or just a single one with a placeholder for t
 
 #### Postcode
 
-- http://api.getthedata.com/postcode/
+- https://api.getthedata.com/postcode/
 
 #### Crime Data
 

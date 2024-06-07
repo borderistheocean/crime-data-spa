@@ -50,7 +50,7 @@ function App() {
         const filterValidPostcodes = searchQuery.split(",").filter((postcode) => postcodeValidator(stripWhitespace(postcode), locale))
 
         if (filterValidPostcodes.length > 0) {
-          const postCodeSearchRequests = filterValidPostcodes.map((x) => `http://api.getthedata.com/postcode/${stripWhitespace(x)}`)
+          const postCodeSearchRequests = filterValidPostcodes.map((x) => `https://api.getthedata.com/postcode/${stripWhitespace(x)}`)
           const fetchPostcodesLatLong = postCodeSearchRequests.map(endpoint => fetch(endpoint).then(response => response.json()));
 
           // Process the requests and responses
