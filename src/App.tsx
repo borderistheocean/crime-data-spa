@@ -7,10 +7,7 @@ import date from 'date-and-time';
 import Navigation from "./Navigation/Navigation";
 import Map from "./Map/Map";
 import CrimeRecords from "./CrimeRecords/CrimeRecords";
-import { Layout, Space, Typography } from 'antd';
-import Search from "antd/es/input/Search";
-import Sider from "antd/es/layout/Sider";
-import { Content, Header } from "antd/es/layout/layout";
+import { Layout, Space, Typography, Input } from 'antd';
 import "./App.scss";
 
 function App() {
@@ -23,7 +20,9 @@ function App() {
   const [resultTotal, setResultTotal] = useState(0);
   const previousInputValue = useRef("");
   const { Text } = Typography;
-
+  const { Search } = Input;
+  const { Sider, Content, Header } = Layout;
+  
   const stripWhitespace = (postcode: string) => {
     return postcode.replace(/ /g, '');
   };
@@ -179,7 +178,7 @@ function App() {
                     <div className="flex items-center justify-center w-full h-full">
                       <div>
                         {(searchParams.get('postcode') === null && resultTotal === 0) &&
-                          <span>Enter postcode/s to search for crimes, entries such as B46QB and LE11AA usually yield good amounts of crime data.</span>
+                          <span>Enter postcode(s) to search for crimes, entries such as B46QB and LE11AA usually yield good amounts of crime data.</span>
                         }
                         {(searchParams.get('postcode') != null && resultTotal === 0) &&
                           <span>No results found for {searchParams.get('postcode')}.</span>
