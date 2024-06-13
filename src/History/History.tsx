@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Row } from "antd";
 import { Typography } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
 
 function History(props: any) {
   const [history, setHistory] = useState(props.entries);
@@ -15,11 +16,9 @@ function History(props: any) {
       <Col span={6} className="truncate self-center leading-normal cursor-pointer" onClick={() => props.updateParameters({ "postcode": data.postcode })}>
         {data.postcode}
       </Col>
-      <Col span={12} className="truncate self-center leading-normal">{data.time}</Col>
+      <Col span={12} className="truncate self-center leading-normal text-gray-400">{data.time}</Col>
       <Col span={6} className="truncate self-center">
-        <Button className="mr-0 ml-auto block leading-normal" onClick={() => props.removeEntry(index)} size="small" type="link" danger>
-          Remove
-        </Button>
+        <Button icon={<CloseOutlined />} className="mr-0 ml-auto block leading-normal float-end" onClick={() => props.removeEntry(index)} size="small" type="link" danger></Button>
       </Col>
     </Row>
   ))

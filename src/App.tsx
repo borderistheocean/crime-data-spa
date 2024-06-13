@@ -161,7 +161,7 @@ function App() {
             <Sider
               width={"15%"}>
               <div className="flex h-full">
-                <div className="flex justify-between flex-col overflow-y-auto">
+                <div className="flex justify-between flex-col overflow-y-auto scrollbar-thin scrollbar-webkit">
                   {(resultTotal !== 0) &&
                     <>
                       <Navigation crimesList={crimesList} />
@@ -173,7 +173,7 @@ function App() {
             </Sider>
             <Content>
               <div className="flex h-full">
-                <div id="crimesContainer" className="flex-auto w-3/4 overflow-y-auto bg-white">
+                <div id="crimesContainer" className="flex-auto w-3/4 overflow-y-auto bg-white scrollbar-thin scrollbar-webkit mx-5">
                   {(resultTotal === 0) &&
                     <div className="flex items-center justify-center w-full h-full">
                       <div>
@@ -195,7 +195,7 @@ function App() {
                     </>
                   }
                 </div>
-                <div className="flex-auto w-1/4 overflow-y-auto">
+                <div role="history" className="flex-auto w-1/4 overflow-y-auto scrollbar-thin scrollbar-webkit">
                   <History removeEntry={(e: any) => removeEntry(e)} entries={history} clearHistory={() => setHistory([])} updateParameters={(e: any) => handleSubmitHistory(e.postcode)} title={"history"} />
                   <div>
                   </div>
