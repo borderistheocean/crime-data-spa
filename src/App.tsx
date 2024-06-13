@@ -209,7 +209,7 @@ function App() {
                     </>
                   }
                 </div>
-                <div role="history" className="flex-auto w-1/4 overflow-y-auto scrollbar-thin scrollbar-webkit">
+                <div className="flex-auto w-1/4 overflow-y-auto scrollbar-thin scrollbar-webkit">
                   <History removeEntry={(e: any) => removeEntry(e)} entries={history} clearHistory={() => { setHistory([]); setResultTotal(0); setSearchParams({ "postcode": "" }) }} updateParameters={(e: any) => handleSubmitHistory(e.postcode)} title={"history"} />
                   <div>
                   </div>

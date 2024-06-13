@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react';
-import Navigation from './Navigation';
+import { render, screen } from "@testing-library/react";
+import Navigation from "./Navigation";
 
 const mockNavigationData =
   [
