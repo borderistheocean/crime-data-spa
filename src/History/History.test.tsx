@@ -36,7 +36,7 @@ it("Should print the history component", () => {
   })
 
   // Remove buttons
-  const removeButtons = screen.getAllByRole("button", { name: /Remove/i });
+  const removeButtons = screen.getAllByRole("button", { name: /delete/i });
   removeButtons.forEach(function (button) {
     expect(button).toBeInTheDocument();
   })
