@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Button } from "antd";
+import { Button, Col, Row } from "antd";
 import { Typography } from "antd";
-import React from "react";
 
 function History(props: any) {
   const [history, setHistory] = useState(props.entries);
@@ -12,26 +11,26 @@ function History(props: any) {
   }, [props]);
 
   const renderHistory = history && history.map((data: any, index: any) => (
-    <React.Fragment key={index}>
-      <div className="truncate">
-        <span className="cursor-pointer" onClick={() => props.updateParameters({ "postcode": data.postcode })}>{data.postcode}</span>
-      </div>
-      <div className="truncate"><small className={"timestamp-entry"}>{data.time}</small></div>
-      <div className="ml-auto mr-0">
-        <Button className="pr-0" onClick={() => props.removeEntry(index)} size="small" type="link" danger>
+    <Row key={index} className="h-8 [&:not(:last-child)]:border-b-1 border-gray-200" data-testid={index.toString().concat(data.postcode)}>
+      <Col span={6} className="truncate self-center leading-normal cursor-pointer" onClick={() => props.updateParameters({ "postcode": data.postcode })}>
+        {data.postcode}
+      </Col>
+      <Col span={12} className="truncate self-center leading-normal">{data.time}</Col>
+      <Col span={6} className="truncate self-center">
+        <Button className="mr-0 ml-auto block leading-normal" onClick={() => props.removeEntry(index)} size="small" type="link" danger>
           Remove
         </Button>
-      </div>
-    </React.Fragment>
+      </Col>
+    </Row>
   ))
 
   return (
     <>
-      <div className="z-10 p-5 flex items-center justify-between sticky bg-white top-0">
+      <div className="z-10 m-5 flex items-center justify-between sticky bg-white top-0">
         <Text type="secondary">Your search history:</Text>
         <Button type="default" size="small" id={"clearHistoryBtn"} onClick={props.clearHistory} danger>Clear all</Button>
       </div>
-      <div key="unique-key" className="items-center p-5 w-full inline-grid grid-cols-3-auto gap-2">
+      <div className="m-5">
         {renderHistory}
       </div>
     </>

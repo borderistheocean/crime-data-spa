@@ -7,6 +7,9 @@ module.exports = {
     extend: {
       gridTemplateColumns: {
         "3-auto": "auto auto auto"
+      },
+      borderWidth: {
+        "1" : "1px"
       }
     },
   },
