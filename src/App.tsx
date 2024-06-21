@@ -7,10 +7,7 @@ import date from 'date-and-time';
 import Navigation from "./Navigation/Navigation";
 import Map from "./Map/Map";
 import CrimeRecords from "./CrimeRecords/CrimeRecords";
-import { Layout, Space, Typography } from 'antd';
-import Search from "antd/es/input/Search";
-import Sider from "antd/es/layout/Sider";
-import { Content, Header } from "antd/es/layout/layout";
+import { Layout, Space, Typography, Input } from 'antd';
 import "./App.scss";
 
 function App() {
@@ -21,8 +18,11 @@ function App() {
   const storedhistory = JSON.parse(localStorage.getItem("history") || "[]");
   const [history, setHistory] = useState(storedhistory);
   const [resultTotal, setResultTotal] = useState(0);
+  const [isFetching, setIsFetching] = useState(false);
   const previousInputValue = useRef("");
-  const { Text } = Typography;
+  const { Text, Link } = Typography;
+  const { Search } = Input;
+  const { Sider, Content, Header } = Layout;
 
   const stripWhitespace = (postcode: string) => {
     return postcode.replace(/ /g, '');
@@ -42,7 +42,7 @@ function App() {
     if (searchQuery) {
       const now = new Date();
       const timeAndDateNow = date.format(now, 'DD/MM/YYYY HH:mm:ss');
-
+      setIsFetching(true);
       setCrimesList([]);
       setResultTotal(0);
       setHistory((history: any) => [{ "postcode": searchQuery, "time": timeAndDateNow }, ...history]);
@@ -89,6 +89,7 @@ function App() {
                     crimes.type = crimes.type.replace(/(^|\s)[a-z]/gi, l => l.toUpperCase());
                   });
 
+                  setIsFetching(false);
                   setCrimesList(chained);
                 });
             })
@@ -101,6 +102,8 @@ function App() {
           if (previousInputValue.current === "" && searchQuery) {
             setpostcodeInputValue(searchQuery)
           }
+        } else {
+          setIsFetching(false);
         }
       })().catch(err => {
         console.error(err);
@@ -128,6 +131,7 @@ function App() {
       setSearchParams({ "postcode": "" });
       setCrimesList([]);
       setpostcodeInputValue("");
+      setResultTotal(0);
     }
 
     setHistory(newHistory);
@@ -142,7 +146,7 @@ function App() {
               level={4}
               style={{
                 margin: 0,
-              }}      
+              }}
             >Crime Data SPA</Typography.Title>
             <Space direction="vertical">
               <Search
@@ -162,7 +166,7 @@ function App() {
             <Sider
               width={"15%"}>
               <div className="flex h-full">
-                <div className="flex justify-between flex-col overflow-y-auto">
+                <div className="flex justify-between flex-col overflow-y-auto scrollbar-thin scrollbar-webkit">
                   {(resultTotal !== 0) &&
                     <>
                       <Navigation crimesList={crimesList} />
@@ -174,20 +178,29 @@ function App() {
             </Sider>
             <Content>
               <div className="flex h-full">
-                <div id="crimesContainer" className="flex-auto w-3/4 overflow-y-auto bg-white">
+                <div id="crimesContainer" className="flex-auto w-3/4 overflow-y-auto bg-white scrollbar-thin scrollbar-webkit mx-5">
                   {(resultTotal === 0) &&
                     <div className="flex items-center justify-center w-full h-full">
                       <div>
-                        {(searchParams.get('postcode') === null && resultTotal === 0) &&
-                          <span>Enter postcode/s to search for crimes, entries such as B46QB and LE11AA usually yield good amounts of crime data.</span>
+                        {/*
+                          If no postcode is entered display a message
+                        */}
+                        {(!searchParams.get('postcode') || (searchParams.get('postcode') && searchParams.get('postcode') === "")) &&
+                          <span>Enter postcode(s) to search for crimes, entries such as <Link onClick={() => setSearchParams({ "postcode": "B46QB" })}>B46QB</Link> and <Link onClick={() => setSearchParams({ "postcode": "LE11AA" })}>LE11AA</Link> usually yield good amounts of crime data.</span>
                         }
-                        {(searchParams.get('postcode') != null && resultTotal === 0) &&
+                        {/*
+                          If a postcode is entered but no results are found
+                        */}
+                        {(searchParams.get('postcode') && searchParams.get('postcode') !== "" && resultTotal === 0 && !isFetching) &&
                           <span>No results found for {searchParams.get('postcode')}.</span>
                         }
                       </div>
                     </div>
                   }
-                  {(searchParams.get('postcode') != null && resultTotal > 0) &&
+                  {/*
+                    If postcode parameter is returning results
+                  */}
+                  {(searchParams.get('postcode') && resultTotal > 0) &&
                     <>
                       <div className="sticky top-0 z-10 min-w-full flex items-center p-5 bg-white">
                         <Text>{`Showing ${resultTotal} crimes for ${searchParams.get('postcode') as string}`}</Text>
@@ -196,8 +209,8 @@ function App() {
                     </>
                   }
                 </div>
-                <div className="flex-auto w-1/4 overflow-y-auto">
-                  <History removeEntry={(e: any) => removeEntry(e)} entries={history} clearHistory={() => setHistory([])} updateParameters={(e: any) => handleSubmitHistory(e.postcode)} title={"history"} />
+                <div className="flex-auto w-1/4 overflow-y-auto scrollbar-thin scrollbar-webkit">
+                  <History removeEntry={(e: any) => removeEntry(e)} entries={history} clearHistory={() => { setHistory([]); setResultTotal(0); setSearchParams({ "postcode": "" }) }} updateParameters={(e: any) => handleSubmitHistory(e.postcode)} title={"history"} />
                   <div>
                   </div>
                 </div>

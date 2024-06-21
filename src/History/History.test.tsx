@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import History from "./History";
+import { mockMatchMedia } from "../setupTests";
 
 const mockHistoryData =
   [
@@ -17,8 +18,12 @@ const mockHistoryData =
     }
   ];
 
-it("Should print the history component", () => {  
-  render(<History entries={mockHistoryData}/>);
+beforeAll(() => {
+  mockMatchMedia();
+});
+
+it("Should print the history component", () => {
+  render(<History entries={mockHistoryData} />);
 
   mockHistoryData.forEach(entry => {
     // Postcode cell value
@@ -31,12 +36,12 @@ it("Should print the history component", () => {
   })
 
   // Remove buttons
-  const removeButtons = screen.getAllByRole("button", {name: /Remove/i});
-  removeButtons.forEach(function(button){
+  const removeButtons = screen.getAllByRole("button", { name: /delete/i });
+  removeButtons.forEach(function (button) {
     expect(button).toBeInTheDocument();
   })
 
   // Clear All button
-  const clearAllButton = screen.getByRole("button", {name: /Clear All/i});
+  const clearAllButton = screen.getByRole("button", { name: /Clear All/i });
   expect(clearAllButton).toBeInTheDocument();
 });

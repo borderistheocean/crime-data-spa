@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react';
-import Map from './Map';
+import { render, screen } from "@testing-library/react";
+import Map from "./Map";
 
 test("Should render map", () => {
   render(<Map />);

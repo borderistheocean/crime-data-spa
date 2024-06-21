@@ -1,6 +1,6 @@
-import { Typography } from 'antd';
+import { Typography } from "antd";
 import CrimeTable from "../CrimeTable/CrimeTable";
-import React from 'react';
+import React from "react";
 
 function CrimeRecords(props: any) {
 

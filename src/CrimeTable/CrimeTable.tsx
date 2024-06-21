@@ -14,24 +14,24 @@ function CrimeTable(props: any) {
 
   const columns = [
     {
-      title: 'Postcode',
-      dataIndex: 'postcode',
-      key: 'postcode',
+      title: "Postcode",
+      dataIndex: "postcode",
+      key: "postcode",
     },
     {
-      title: 'Month',
-      dataIndex: 'month',
-      key: 'month',
+      title: "Month",
+      dataIndex: "month",
+      key: "month",
     },
     {
-      title: 'Street',
-      dataIndex: 'street',
-      key: 'street',
+      title: "Street",
+      dataIndex: "street",
+      key: "street",
     },
     {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
     },
   ];
 
