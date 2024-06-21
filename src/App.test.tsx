@@ -83,7 +83,6 @@ test("Render screen with postcode parameter", async () => {
   );
 });
 
-
 test("Render screen with multiple postcode parameters", async () => {
   render(
     <MemoryRouter initialEntries={["/?postcode=B46QB,LE11AA"]}>
